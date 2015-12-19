@@ -9,7 +9,17 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder',             '~> 2.0'
 gem 'figaro'
+gem 'bootstrap-sass'
+gem 'high_voltage'
+gem 'simple_form'
+gem 'slim-rails'
+gem 'unicorn'
+gem 'unicorn-rails'
+
+# Omniauth
 gem 'oauth'
+gem 'omniauth'
+gem 'omniauth-twitter'
 gem 'omniauth-evernote'
 gem 'omniauth-instapaper'
 
@@ -28,15 +38,6 @@ group :development, :test do
   gem 'colorize'
   gem 'fuubar'
 end
-
-gem 'bootstrap-sass'
-gem 'high_voltage'
-gem 'omniauth'
-gem 'omniauth-twitter'
-gem 'simple_form'
-gem 'slim-rails'
-gem 'unicorn'
-gem 'unicorn-rails'
 
 group :development do
   gem 'better_errors'
