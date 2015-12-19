@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_one :evernote_account, dependent: :destroy
 
   def self.create_with_omniauth(auth)
     create! do |user|
@@ -11,7 +12,7 @@ class User < ActiveRecord::Base
   end
 
   def evernote_connected?
-    false
+    !!evernote_account
   end
 
   def instapaper_connected?

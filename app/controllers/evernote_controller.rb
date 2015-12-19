@@ -10,8 +10,8 @@ class EvernoteController < ApplicationController
 
   def create
     session[:auth_token] = request.env['omniauth.auth']['credentials']['token']
-    puts '============================='.black
     en_client = EvernoteClient.new(auth_token: session[:auth_token])
+    puts '============================='.black
     ap session
     puts '-----------------------------'.black
     ap request.env['omniauth.auth']['extra']['access_token']

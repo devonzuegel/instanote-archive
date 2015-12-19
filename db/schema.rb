@@ -11,23 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151219203927) do
+ActiveRecord::Schema.define(version: 20151219203728) do
 
   create_table "evernote_accounts", force: :cascade do |t|
     t.string   "auth_token"
+    t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "evernote_accounts", ["user_id"], name: "index_evernote_accounts_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "provider"
     t.string   "uid"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.integer  "evernote_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
-
-  add_index "users", ["evernote_account_id"], name: "index_users_on_evernote_account_id"
 
 end
