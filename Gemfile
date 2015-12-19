@@ -10,8 +10,8 @@ gem 'turbolinks'
 gem 'jbuilder',             '~> 2.0'
 gem 'figaro'
 gem 'oauth'
-gem 'evernote_oauth'
 gem 'omniauth-evernote'
+gem 'omniauth-instapaper'
 
 group :development, :test do
   gem 'byebug'

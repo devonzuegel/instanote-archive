@@ -12,7 +12,7 @@ class Setup
       }, {
         done:   user && user.instapaper_connected?,
         phrase: 'Connect Instapaper',
-        url:    '#'
+        url:    '/instapaper/connect'
       }, {
         phrase: 'Read!',
         url:    'http://instapaper.com'

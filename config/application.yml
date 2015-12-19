@@ -1,0 +1,22 @@
+# Evernote Oauth
+en_consumer_key:           devonzuegel-6811
+en_secret_key:             30237179ff568ab0
+
+# Instapaper Oauth
+instapaper_consumer_key:    1bc89c32192547828c2c104b5e82e6cf
+instapaper_consumer_secret: 62d9bdbb5cdb42b88c8d268fac274408
+
+development:
+  # Twitter Oauth
+  omniauth_provider_key:     MduSuyVt3OgDD6q3vY4VWo7w9
+  omniauth_provider_secret:  CFFxe7gAOYwIk4LuQ0TVKi8M4b4agBUr3qp6T2cvzSuTLgxVrr
+  # Evernote Oauth
+  en_oauth_site:             https://sandbox.evernote.com/
+
+
+production:
+  # Twitter Oauth
+  omniauth_provider_key:     8NL0YeSYTJdjMt3frVJl77xQt
+  omniauth_provider_secret:  8hVGjADkiRJdtvNgcWVSMZUi0Mx6h3oLxjA5B4BBtlyoP7lSNo
+  # Evernote Oauth
+  en_oauth_site:             https://sandbox.evernote.com/  # https://www.evernote.com
