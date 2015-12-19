@@ -6,11 +6,6 @@ class SessionsController < ApplicationController
 
   def create
     auth = request.env['omniauth.auth']
-    puts
-    puts
-    puts auth['provider'].red
-    puts
-    puts
     user = User.where(provider: auth['provider'],
                       uid:      auth['uid'].to_s).first || User.create_with_omniauth(auth)
     reset_session
