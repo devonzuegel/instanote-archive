@@ -9,13 +9,7 @@ class EvernoteController < ApplicationController
   end
 
   def create
-    session[:auth_token] = request.env['omniauth.auth']['credentials']['token']
-    en_client = EvernoteClient.new(auth_token: session[:auth_token])
-    puts '============================='.black
-    ap session
-    puts '-----------------------------'.black
-    ap request.env['omniauth.auth']['extra']['access_token']
-    puts '============================='.black
+    current_user.connect_evernote(request.env['omniauth.auth'])
     redirect_to root_url, notice: 'Evernote connected!'
   end
 end

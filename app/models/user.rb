@@ -11,6 +11,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def connect_evernote(omniauth_response)
+    auth_token       = omniauth_response['credentials']['token']
+    evernote_account = EvernoteAccount.create(auth_token: auth_token, user: self)
+  end
+
   def evernote_connected?
     !!evernote_account
   end
