@@ -9,6 +9,9 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder',             '~> 2.0'
 gem 'figaro'
+gem 'oauth'
+gem 'evernote_oauth'
+gem 'omniauth-evernote'
 
 group :development, :test do
   gem 'byebug'
