@@ -9,24 +9,21 @@ body
             hr.small
             span.subheading Save your Instapaper archive to Evernote
   /! Main Content
-  .container
-    .row
-      .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
-        a(href='#') Connect
-        |  Instapaper &amp; Evernote
-  /       - articles = [{title:'Title', subtitle: 'Problems look mighty small from 150 miles up', url: '#', author: 'Devon Zuegel', date: 'September 24, 2014'}]
-  /       - articles.each do |article|
-  /         .post-preview
-  /           = link_to article[:url]
-  /             h2.post-title= article[:title]
-  /             h3.post-subtitle= article[:subtitle]
-  /           p.post-meta
-  /             | Posted by
-  /             a(href='#')= " #{article[:author]} "
-  /             | on #{article[:date]}
-  /         hr/
-
-  /         /! Pager
-  /         ul.pager
-  /           li.next
-  /             a href="#"  Older Posts →
+  .container.small
+    .row: ul.list-inline
+      - Setup.steps(current_user).each_with_index do |a, i|
+        - if i > 0
+          hr
+        li.larger-font
+          - if a[:done]
+            span.fa-stack.fa-lg
+              i.fa.fa-circle.fa-stack-2x.fa-done
+              i.fa.fa-stack-1x.fa-inverse.fa-check
+            i.fa-done  #{a[:phrase]}
+          - else
+            a href="#{a[:url]}"
+              span.fa-stack.fa-lg
+                i.fa.fa-circle.fa-stack-2x
+                i.fa.fa-stack-1x.fa-inverse.fa-stack-text= i + 1
+              |  #{a[:phrase]}
+    / = render 'visitors/articles'

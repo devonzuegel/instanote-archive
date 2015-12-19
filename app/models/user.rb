@@ -10,4 +10,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def evernote_connected?
+    false
+  end
+
+  def instapaper_connected?
+    false
+  end
 end

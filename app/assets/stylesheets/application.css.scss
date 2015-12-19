@@ -14,9 +14,73 @@
  *= require_self
  */
 
+$green: #27d096;
+$dark-green: darken($green, 6%);
 .alert {
   position: fixed;
   margin: 60px 10px 10px 10px;
   width: 97%;
   opacity: .9;
+}
+
+.fa-stack-text {
+  font-family: 'Lora' !important;
+}
+
+li a {
+  text-decoration: none !important;
+}
+
+.larger-font {
+  font-size: 1.2em;
+}
+
+.container {
+  padding: 0 40px;
+  &.small {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-inverse {
+    border: none;
+    background-color: rgba(0,0,0,0.3);
+  }
+
+  .navbar-collapse {
+    border: none;
+    box-shadow: none;
+  }
+}
+
+.navbar-inverse {
+  .navbar-toggle {
+    border: none;
+  }
+
+  a {
+    color: #ddd !important;
+    &:hover {
+      color: white !important;
+    }
+  }
+  .navbar-toggle {
+    background-color: transparent !important;
+    &:hover {
+      background-color: transparent !important;
+    }
+  }
+}
+
+i.fa-green {
+  color: $green !important;
+}
+
+i.fa-grey {
+  color: #ccc !important;
+}
+
+i.fa-done {
+  @extend i.fa-grey;
 }
