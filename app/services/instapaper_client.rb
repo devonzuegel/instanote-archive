@@ -8,6 +8,9 @@ class InstapaperClient
     }
     @client = Instapaper::Client.new(@credentials)
     @client.verify_credentials
-    puts @client.bookmarks
+  end
+
+  def bookmarks
+    @client.bookmarks
   end
 end

@@ -1,0 +1,19 @@
+body
+  / http://ironsummitmedia.github.io/startbootstrap-clean-blog/img/about-bg.jpg
+  header.intro-header style="background-image: url('assets/notebook2.jpg')"
+    .container
+      .row
+        .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+          .site-heading
+            h1 Instanote
+            hr.small
+            span.subheading Save your Instapaper archive to Evernote
+  /! Main Content
+  .container.small
+    .row: ul.list-inline
+      b= "Number of bookmarks: "
+      code= @bookmarks.count
+      - @bookmarks.each_with_index do |a, i|
+        / - if i > 0
+        hr
+        pre= JSON.pretty_generate(a.as_json)
