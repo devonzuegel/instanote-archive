@@ -1,17 +1,22 @@
 class EvernoteController < ApplicationController
+  before_filter :check_status
 
   def new
-    if !user_signed_in?
-      redirect_to root_url, notice: 'Please sign up or sign in!'
-    elsif current_user.evernote_connected?
-      redirect_to root_url, notice: 'You have already connected your Evernote account!'
-    else
-      redirect_to '/auth/evernote'
-    end
+    redirect_to '/auth/evernote'
   end
 
   def create
     current_user.connect_evernote(request.env['omniauth.auth'])
     redirect_to root_url, notice: 'Evernote connected!'
+  end
+
+  private
+
+  def check_status
+    if !user_signed_in?
+      redirect_to root_url, notice: 'Please sign up or sign in!'
+    elsif current_user.evernote_connected?
+      redirect_to root_url, notice: 'You have already connected your Evernote account!'
+    end
   end
 end
