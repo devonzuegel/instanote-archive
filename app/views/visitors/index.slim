@@ -1,29 +1,27 @@
-body
-  / http://ironsummitmedia.github.io/startbootstrap-clean-blog/img/about-bg.jpg
-  header.intro-header style="background-image: url('assets/notebook1.jpg')"
-    .container
-      .row
-        .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
-          .site-heading
-            h1 Instanote
-            hr.small
-            span.subheading Save your Instapaper archive to Evernote
-  /! Main Content
-  .container.small
-    .row: ul.list-inline
-      - Setup.steps(current_user).each_with_index do |a, i|
-        - if i > 0
-          hr
-        li.larger-font
-          - if a[:done]
+header.intro-header style="background-image: url('assets/notebook1.jpg')"
+  .container
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+        .site-heading
+          h1 Instanote
+          hr.small
+          span.subheading Save your Instapaper archive to Evernote
+/! Main Content
+.container.small
+  .row: ul.list-inline
+    - Setup.steps(current_user).each_with_index do |a, i|
+      - if i > 0
+        hr
+      li.larger-font
+        - if a[:done]
+          span.fa-stack.fa-lg
+            i.fa.fa-circle.fa-stack-2x.fa-done
+            i.fa.fa-stack-1x.fa-inverse.fa-check
+          i.fa-done  #{a[:phrase]}
+        - else
+          a href="#{a[:url]}"
             span.fa-stack.fa-lg
-              i.fa.fa-circle.fa-stack-2x.fa-done
-              i.fa.fa-stack-1x.fa-inverse.fa-check
-            i.fa-done  #{a[:phrase]}
-          - else
-            a href="#{a[:url]}"
-              span.fa-stack.fa-lg
-                i.fa.fa-circle.fa-stack-2x
-                i.fa.fa-stack-1x.fa-inverse.fa-stack-text= i + 1
-              |  #{a[:phrase]}
-    / = render 'visitors/articles'
+              i.fa.fa-circle.fa-stack-2x
+              i.fa.fa-stack-1x.fa-inverse.fa-stack-text= i + 1
+            |  #{a[:phrase]}
+  / = render 'visitors/articles'

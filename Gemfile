@@ -22,7 +22,7 @@ gem 'omniauth',             '1.2.2'
 gem 'omniauth-twitter',     '1.2.1'
 gem 'omniauth-evernote',    '1.2.1'
 gem 'omniauth-instapaper',  '0.2.0'
-
+gem 'redcarpet'
 # Instapaper
 gem 'instapaper',           '1.0.0.pre2'
 

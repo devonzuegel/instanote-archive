@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   resources :users
   root to: 'visitors#index'
-  get '/bookmarks'                => 'visitors#bookmarks'
+
+  get '/bookmarks'                => 'visitors#bookmarks', as: :bookmarks
+  get '/about'                    => 'visitors#about',     as: :about
 
   get '/auth/failure'             => 'sessions#failure'
 

@@ -1,5 +1,5 @@
 class VisitorsController < ApplicationController
-  before_filter :authenticate_, only: [ :bookmarks ]
+  before_filter :authenticate_instapaper, only: [ :bookmarks ]
 
   def index
   end
@@ -12,8 +12,10 @@ class VisitorsController < ApplicationController
 
   private
 
-  def authenticate_
-    if !current_user.instapaper_connected?
+  def authenticate_instapaper
+    if !user_signed_in?
+      redirect_to root_url, notice: 'Please sign in or sign up.'
+    elsif !current_user.instapaper_connected?
       redirect_to root_url, notice: 'Please connect your Instapaper account.'
     end
   end

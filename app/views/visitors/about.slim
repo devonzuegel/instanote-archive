@@ -1,0 +1,28 @@
+figure.tint: header.intro-header.short style="background-image: url('assets/books3.jpg')"
+  .container
+    .row
+      .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+        .site-heading
+          h1 About
+/! Main Content
+.container.small: .row
+  markdown:
+    Hi, I'm Devon! I built this tiny app to solve a problem that's been bugging me for weeks. All of my Instapaper bookmarks and highlights were isolated from the knowledge that I (obsessively) store in Evernote, and I wanted to have them all in one place. After all, a [personal knowledge base](https://en.wikipedia.org/wiki/Personal_knowledge_base) is useless if it doesn't contain half of the things I read throughout the day.
+
+    Instanote solves this problem by syncing the text of your archived Instapaper bookmarks with their respective highlights into Evernote each day. When you first connect your accounts, it syncs the last 500 archived bookmarks.
+
+    I'd love to hear your feedback on Instanote! Feel free to email me at [devonzuegel@gmail.com](mailto:devonzuegel@gmail.com). You can learn more about my other projects at [my personal site](http://devonzuegel.com).
+
+    <div class='spacer'></div>
+
+    ## Some things you should know ##
+
+    The [Instapaper API](https://www.instapaper.com/api) currently does not support pagination. As a result, **Instanote can only back-archive your last 500 bookmarks to Evernote when you first sign up.** I have spoken with Brian (the creator of Instapaper), and said that he plans on adding this functionality when he gets the chance.
+
+    ---
+
+    **Instanote will only store the last 500 articles bookmarked in a given day.** This happens because it syncs Instapaper and Evernote once a day. I don't expect this to be a problem for anyone unless you read constantly (in which case props to you, yay for reading!), but if it is then just ping me and I'll consider increasing the syncing frequency.
+
+    ---
+
+    **Certain highlights will be lost upon storing archived bookmarks to Evernote.** To be specific, this includes any highlights whose original text had special formatting (e.g. bold, italics, links). My current method for finding highlights is to simply `gsub` the text of the highlight with the same string wrapped in a `.highlight` tag. As a result, if the html of an occurrence of that substring contains tags that don't show up in the plaintext version (e.g. *"The last word of this sentence is \<strong\>bolded\</strong\>!"*), then it will not be captured. I will fix this at some point.

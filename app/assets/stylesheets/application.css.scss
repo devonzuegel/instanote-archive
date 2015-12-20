@@ -84,3 +84,55 @@ i.fa-grey {
 i.fa-done {
   @extend i.fa-grey;
 }
+
+.highlighted {
+  background-color: #FFFFb0;
+  padding: 1px;
+}
+
+p, li {
+  line-height: 1.85em;
+}
+.spacer {
+  height: 5px;
+  width: 100%;
+}
+.text-pic-shadow {
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.75) !important;
+}
+.text-pic-shadow-small {
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.75) !important;
+}
+.intro-header .site-heading h1 {
+  @extend .text-pic-shadow;
+}
+nav li a {
+  @extend .text-pic-shadow-small;
+}
+.tint {
+  position: relative;
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.3);
+  }
+}
+.intro-header {
+  min-height: 50vh;
+  .site-heading, .post-heading, .page-heading {
+    padding: 22vh 0;
+    color: white;
+  }
+
+  &.short {
+    min-height: 5vh;
+    .site-heading, .post-heading, .page-heading {
+      padding: 5vh 0;
+    }
+  }
+}

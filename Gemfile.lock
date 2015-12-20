@@ -244,6 +244,7 @@ GEM
     rb-fsevent (0.9.6)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
+    redcarpet (3.3.3)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -379,6 +380,7 @@ DEPENDENCIES
   rb-fchange
   rb-fsevent
   rb-inotify
+  redcarpet
   rspec-rails
   sass-rails (~> 5.0)
   selenium-webdriver
