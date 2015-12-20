@@ -30,7 +30,22 @@ class InstapaperClient
 
   def build_bookmark(bookmark)
     bookmark_id = bookmark['bookmark_id']
-    text        = @client.get_text(bookmark_id).force_encoding("utf-8")
+    html        = @client.get_text(bookmark_id).force_encoding("utf-8")
+    doc         = Nokogiri::HTML(html)
+    doc.search('figure').remove
+
+    sanitized   = Sanitize.fragment(doc.to_html,
+      elements: %w(h1 h2 h3 h4 h5 h6 strong i p b a span ul ol li),
+      attributes: {
+        'a'    => ['href', 'title'],
+        'span' => ['class']
+      },
+      protocols: {
+        'a'   => {'href' => ['ftp', 'http', 'https', 'mailto']}
+      }
+    )
+
+    puts sanitized.blue
     # plaintext   = Nokogiri::HTML(text).text
     highlights  = @client.highlights(bookmark_id)
     {
@@ -43,7 +58,7 @@ class InstapaperClient
       progress:           bookmark['progress'],
       starred:            bookmark['starred'],
       type:               bookmark['type'],
-      text:               build_highlighted_text(sanitize(text), highlights)
+      text:               build_highlighted_text(sanitized, highlights)
     }
   end
 
