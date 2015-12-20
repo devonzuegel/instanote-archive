@@ -4,6 +4,7 @@ class CreateInstapaperAccounts < ActiveRecord::Migration
       t.string :token
       t.string :secret
       t.string :username
+      t.references :user, index: true, foreign_key: true
 
       t.timestamps null: false
     end
