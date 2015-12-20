@@ -1,5 +1,5 @@
 class InstapaperClient
-  LIMIT = 4  # Max allowed is 500
+  LIMIT = 2  # Max allowed is 500
 
   def initialize(instapaper_account)
     @credentials = {
@@ -31,7 +31,7 @@ class InstapaperClient
   def build_bookmark(bookmark)
     bookmark_id = bookmark['bookmark_id']
     text        = @client.get_text(bookmark_id).force_encoding("utf-8")
-    plaintext   = "#{Nokogiri::HTML(text).text[0..200]} ..."
+    # plaintext   = Nokogiri::HTML(text).text
     highlights  = @client.highlights(bookmark_id)
     {
       description:        bookmark['description'],
@@ -43,15 +43,22 @@ class InstapaperClient
       progress:           bookmark['progress'],
       starred:            bookmark['starred'],
       type:               bookmark['type'],
-      text:               build_highlighted_text(plaintext, highlights)
+      text:               build_highlighted_text(sanitize(text), highlights)
     }
   end
 
   def build_highlighted_text(text, highlights)
-    highlights.each do |h|
-      str = h[:text]
-      text.gsub! str, "<span class='highlighted'>#{str}</span>"
-    end
+    # open_tag  = ''# '<span class="highlighted">'
+    # close_tag = ''# '</span>'
+    # highlights.each do |h|
+    #   highlighted_str = "#{open_tag}#{h[:text]}#{close_tag}"
+    #   text = text.gsub(h[:text], highlighted_str)
+    # end
+    # # fix_span_issue(text)
     text
+  end
+
+  def fix_span_issue(text)
+    text.gsub('<span>', '<span class="span">')
   end
 end

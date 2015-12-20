@@ -16,48 +16,40 @@ class EvernoteClient
   def note_from_bookmark(bookmark)
     parent_notebook = nil
     note_title = bookmark[:title]
-    note_body  = bookmark[:text]
+    note_body  = bookmark[:text]#.slice(bookmark[:text].index('<html>')..-1)
+    # # CGI.unescapeHTML()
+    # puts 'NOTE BODY: --------------------------------------------------'
+    # puts note_body
+    # puts '-------------------------------------------------------------'
 
     n_body  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
     n_body += "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">"
     n_body += "<en-note>#{note_body}</en-note>"
 
-    ## Create note object
+    # Create note object
+    # parent_notebook is optional; if omitted, default notebook is used
     our_note         = Evernote::EDAM::Type::Note.new
     our_note.title   = note_title
     our_note.content = n_body
-
-    ## parent_notebook is optional; if omitted, default notebook is used
     if parent_notebook && parent_notebook.guid
       our_note.notebookGuid = parent_notebook.guid
     end
 
-    ## Attempt to create note in Evernote account
-    begin
+    begin  # Attempt to create note in Evernote account
       note = note_store.createNote(our_note)
-    rescue Evernote::EDAM::Error::EDAMUserException => edue
-      ## Something was wrong with the note data
-      ## See EDAMErrorCode enumeration for error code explanation
-      ## http://dev.evernote.com/documentation/reference/Errors.html#Enum_EDAMErrorCode
-      puts "EDAMUserException: #{edue}"
+    rescue Evernote::EDAM::Error::EDAMUserException => edue  ## Something was wrong with the note data
+      # See EDAMErrorCode enumeration for error code explanation
+      # http://dev.evernote.com/documentation/reference/Errors.html#Enum_EDAMErrorCode
+      puts " EDAMUserException:                 \n" +
+           " > errorCode: #{edue.errorCode}     \n" +
+           " > parameter: #{edue.parameter}       "
     rescue Evernote::EDAM::Error::EDAMNotFoundException => ednfe
-      ## Parent Notebook GUID doesn't correspond to an actual notebook
+      # Parent Notebook GUID doesn't correspond to an actual notebook
       puts "EDAMNotFoundException: Invalid parent notebook GUID"
     end
 
-    ## Return created note object
     note
   end
-
-  # def note_from_bookmark(bookmark)
-
-  #   # note = Evernote::EDAM::Type::Note.new({
-  #   #   title:    'THIS IS A TEST',
-  #   #   content:  'This is the note\'s content',
-  #   #   tagNames: ['tag1']
-  #   # })
-  #   note_store.createNote(@auth_token, note)
-  # end
 
   def notebooks
     note_store.listNotebooks(@auth_token).map { |n| format_notebook(n) }
@@ -77,7 +69,7 @@ class EvernoteClient
 
   def notes
     note_guids = notes_metadata.notes.map(&:guid)
-    notes = note_guids.map { |guid| find_note_by_guid(guid) }
+    notes      = note_guids.map { |guid| find_note_by_guid(guid) }
   end
 
   def find_note_by_guid(guid)

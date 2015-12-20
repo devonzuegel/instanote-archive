@@ -2,9 +2,16 @@ module EvernoteParsable
   extend ActiveSupport::Concern
 
   module ClassMethods
+    EDAM_NOTE_CONTENT_LEN_MAX = 5_242_880  # dev.evernote.com/doc/reference/Limits.html#Const_EDAM_NOTE_CONTENT_LEN_MAX
   end
 
   module InstanceMethods
+
+    def wrap_highlights(text, highlights)
+      # open_tag  = '<span style="-evernote-highlighted:true; background-color:#f6ee96">'
+      # close_tag = '<\span>'
+      raise Exception
+    end
 
     private
 

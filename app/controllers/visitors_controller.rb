@@ -7,12 +7,15 @@ class VisitorsController < ApplicationController
   def bookmarks
     in_client  = InstapaperClient.new(current_user.instapaper_account)
     @bookmarks = []
-    in_client.bookmarks.each { |b| @bookmarks << b }
+    in_client.bookmarks.each { |b| @bookmarks << b }  # Can't .map the bookmark list >:|
 
     en_client  = EvernoteClient.new(auth_token: current_user.evernote_account.auth_token)
-    @notebooks = en_client.notebooks
+    # @notebooks = en_client.notebooks
+    # @notes     = en_client.notes
 
-    en_client.note_from_bookmark(@bookmarks.first)
+    # puts "@bookmarks.second[:text].length = #{@bookmarks.second[:text].length}".red
+    en_client.note_from_bookmark(@bookmarks.second)
+    # @bookmarks.each { |b| en_client.note_from_bookmark(b) }
   end
 
   private

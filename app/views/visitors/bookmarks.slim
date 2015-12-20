@@ -7,13 +7,15 @@ figure.tint: header.intro-header.short style="background-image: url('assets/book
 /! Main Content
 .container.small
   .row: ul.list-inline
-    h1 Notebooks
-    - @notebooks.each do |notebook|
-      pre= JSON.pretty_generate(notebook.as_json)
+    / h1 Notebooks (#{@notebooks.count})
+    / - @notebooks.each do |notebook|
+    /   pre= JSON.pretty_generate(notebook.as_json)
 
+    / h1 Notes (#{@notes.count})
+    / - @notes.each do |note|
+    /   pre= JSON.pretty_generate(note.as_json)
 
-    h1 Bookmarks
-    pre Number of bookmarks: #{@bookmarks.count}
+    h1 Bookmarks (#{@bookmarks.count})
     - @bookmarks.each_with_index do |a, i|
       / pre= JSON.pretty_generate(a.as_json)
       - if i > 0
