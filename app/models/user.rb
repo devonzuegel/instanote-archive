@@ -13,15 +13,26 @@ class User < ActiveRecord::Base
   end
 
   def connect_evernote(omniauth_response)
-    auth_token       = omniauth_response['credentials']['token']
-    evernote_account = EvernoteAccount.create(auth_token: auth_token, user: self)
+    evernote_account = EvernoteAccount.create({
+      auth_token: omniauth_response['credentials']['token'],
+      user:       self
+    })
   end
 
   def evernote_connected?
     !!evernote_account
   end
 
+  def connect_instapaper(omniauth_response)
+    instapaper_account = InstapaperAccount.create({
+      username: omniauth_response['extra']['raw_info']['username'],
+      secret:   omniauth_response['credentials']['secret'],
+      token:    omniauth_response['credentials']['token'],
+      user:     self
+    })
+  end
+
   def instapaper_connected?
-    false
+    !!instapaper_account
   end
 end
