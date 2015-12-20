@@ -1,6 +1,5 @@
 class InstapaperController < ApplicationController
   def new
-    ap current_user
     if !user_signed_in?
       redirect_to root_url, notice: 'Please sign up or sign in!'
     elsif current_user.instapaper_connected?
