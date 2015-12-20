@@ -13,6 +13,52 @@ class EvernoteClient
     ping_evernote
   end
 
+  def note_from_bookmark(bookmark)
+    parent_notebook = nil
+    note_title = bookmark[:title]
+    note_body  = bookmark[:text]
+
+    n_body  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    n_body += "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">"
+    n_body += "<en-note>#{note_body}</en-note>"
+
+    ## Create note object
+    our_note         = Evernote::EDAM::Type::Note.new
+    our_note.title   = note_title
+    our_note.content = n_body
+
+    ## parent_notebook is optional; if omitted, default notebook is used
+    if parent_notebook && parent_notebook.guid
+      our_note.notebookGuid = parent_notebook.guid
+    end
+
+    ## Attempt to create note in Evernote account
+    begin
+      note = note_store.createNote(our_note)
+    rescue Evernote::EDAM::Error::EDAMUserException => edue
+      ## Something was wrong with the note data
+      ## See EDAMErrorCode enumeration for error code explanation
+      ## http://dev.evernote.com/documentation/reference/Errors.html#Enum_EDAMErrorCode
+      puts "EDAMUserException: #{edue}"
+    rescue Evernote::EDAM::Error::EDAMNotFoundException => ednfe
+      ## Parent Notebook GUID doesn't correspond to an actual notebook
+      puts "EDAMNotFoundException: Invalid parent notebook GUID"
+    end
+
+    ## Return created note object
+    note
+  end
+
+  # def note_from_bookmark(bookmark)
+
+  #   # note = Evernote::EDAM::Type::Note.new({
+  #   #   title:    'THIS IS A TEST',
+  #   #   content:  'This is the note\'s content',
+  #   #   tagNames: ['tag1']
+  #   # })
+  #   note_store.createNote(@auth_token, note)
+  # end
+
   def notebooks
     note_store.listNotebooks(@auth_token).map { |n| format_notebook(n) }
   end
@@ -61,11 +107,11 @@ class EvernoteClient
 
   def notes_metadata_result_spec
     Evernote::EDAM::NoteStore::NotesMetadataResultSpec.new(
-      includeTitle: true,
+      includeTitle:         true,
       includeContentLength: true,
-      includeCreated: true,
-      includeUpdated: true,
-      includeDeleted: true,
+      includeCreated:       true,
+      includeUpdated:       true,
+      includeDeleted:       true,
     )
   end
 end

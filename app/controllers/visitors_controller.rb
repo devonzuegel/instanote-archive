@@ -1,5 +1,5 @@
 class VisitorsController < ApplicationController
-  before_filter :authenticate_instapaper, only: [ :bookmarks ]
+  before_filter :authenticate_instapaper!, only: [ :bookmarks ]
 
   def index
   end
@@ -11,14 +11,15 @@ class VisitorsController < ApplicationController
 
     en_client  = EvernoteClient.new(auth_token: current_user.evernote_account.auth_token)
     @notebooks = en_client.notebooks
+
+    en_client.note_from_bookmark(@bookmarks.first)
   end
 
   private
 
-  def authenticate_instapaper
-    if !user_signed_in?
-      redirect_to root_url, notice: 'Please sign in or sign up.'
-    elsif !current_user.instapaper_connected?
+  def authenticate_instapaper!
+    authenticate_user!
+    if !current_user.instapaper_connected?
       redirect_to root_url, notice: 'Please connect your Instapaper account.'
     end
   end

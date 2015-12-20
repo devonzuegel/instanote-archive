@@ -10,14 +10,14 @@ module EvernoteParsable
 
     def format_note(note)
       {
-        guid: note.guid,
-        title: note.title,
-        content: note.content,
+        guid:          note.guid,
+        title:         note.title,
+        content:       note.content,
         en_created_at: timestamp_to_datetime(note.created),
         en_updated_at: timestamp_to_datetime(note.updated),
-        active: note.active,
+        active:        note.active,
         notebook_guid: note.notebookGuid,
-        author: note.attributes.author
+        author:        note.attributes.author
       }
     end
 

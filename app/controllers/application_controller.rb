@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
     end
 
     def authenticate_user!
-      redirect_to root_url, alert: 'Please sign in in order to access to this page.' if !current_user
+      redirect_to root_url, alert: 'Please sign in or sign up.' if !user_signed_in?
     end
 
 end
