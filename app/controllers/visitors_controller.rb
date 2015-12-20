@@ -5,9 +5,12 @@ class VisitorsController < ApplicationController
   end
 
   def bookmarks
-    client     = InstapaperClient.new(current_user.instapaper_account)
+    in_client  = InstapaperClient.new(current_user.instapaper_account)
     @bookmarks = []
-    client.bookmarks.each { |b| @bookmarks << b }
+    in_client.bookmarks.each { |b| @bookmarks << b }
+
+    en_client  = EvernoteClient.new(auth_token: current_user.evernote_account.auth_token)
+    @notebooks = en_client.notebooks
   end
 
   private

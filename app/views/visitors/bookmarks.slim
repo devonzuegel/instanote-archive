@@ -7,10 +7,16 @@ figure.tint: header.intro-header.short style="background-image: url('assets/book
 /! Main Content
 .container.small
   .row: ul.list-inline
-    b= "Number of bookmarks: "
-    code= @bookmarks.count
+    h1 Notebooks
+    - @notebooks.each do |notebook|
+      pre= JSON.pretty_generate(notebook.as_json)
+
+
+    h1 Bookmarks
+    pre Number of bookmarks: #{@bookmarks.count}
     - @bookmarks.each_with_index do |a, i|
-      / - if i > 0
-      hr
+      / pre= JSON.pretty_generate(a.as_json)
+      - if i > 0
+        hr
+      h3= a[:title]
       == a[:text]
-      /pre= JSON.pretty_generate(a.as_json)

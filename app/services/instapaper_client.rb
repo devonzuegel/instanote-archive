@@ -1,5 +1,5 @@
 class InstapaperClient
-  LIMIT = 2  # Max allowed is 500
+  LIMIT = 4  # Max allowed is 500
 
   def initialize(instapaper_account)
     @credentials = {
@@ -31,6 +31,7 @@ class InstapaperClient
   def build_bookmark(bookmark)
     bookmark_id = bookmark['bookmark_id']
     text        = @client.get_text(bookmark_id).force_encoding("utf-8")
+    plaintext   = "#{Nokogiri::HTML(text).text[0..200]} ..."
     highlights  = @client.highlights(bookmark_id)
     {
       description:        bookmark['description'],
@@ -42,7 +43,7 @@ class InstapaperClient
       progress:           bookmark['progress'],
       starred:            bookmark['starred'],
       type:               bookmark['type'],
-      text:               build_highlighted_text(text, highlights)
+      text:               build_highlighted_text(plaintext, highlights)
     }
   end
 
