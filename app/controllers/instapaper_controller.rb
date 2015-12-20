@@ -9,6 +9,10 @@ class InstapaperController < ApplicationController
   end
 
   def create
+    ap request.env['omniauth.auth']['extra']['raw_info']
+    ap request.env['omniauth.auth']['credentials']['secret']
+    ap request.env['omniauth.auth']['credentials']['token']
+
     # current_user.connect_evernote(request.env['omniauth.auth'])
     redirect_to root_url, notice: 'Instapaper connected!'
   end
