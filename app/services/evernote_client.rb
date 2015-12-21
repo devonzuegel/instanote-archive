@@ -16,7 +16,7 @@ class EvernoteClient
   def note_from_bookmark(bookmark)
     parent_notebook = nil
     note_title = bookmark[:title]
-    note_body  = bookmark[:text]#.slice(bookmark[:text].index('<html>')..-1)
+    note_body  = html_to_enml(bookmark[:text])#.slice(bookmark[:text].index('<html>')..-1)
     # # CGI.unescapeHTML()
     # puts 'NOTE BODY: --------------------------------------------------'
     # puts note_body

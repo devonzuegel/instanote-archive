@@ -30,23 +30,7 @@ class InstapaperClient
 
   def build_bookmark(bookmark)
     bookmark_id = bookmark['bookmark_id']
-    html        = @client.get_text(bookmark_id).force_encoding("utf-8")
-    doc         = Nokogiri::HTML(html)
-    doc.search('figure').remove
-
-    sanitized   = Sanitize.fragment(doc.to_html,
-      elements: %w(h1 h2 h3 h4 h5 h6 strong i p b a span ul ol li),
-      attributes: {
-        'a'    => ['href', 'title'],
-        'span' => ['class']
-      },
-      protocols: {
-        'a'   => {'href' => ['ftp', 'http', 'https', 'mailto']}
-      }
-    )
-
-    puts sanitized.blue
-    # plaintext   = Nokogiri::HTML(text).text
+    text        = @client.get_text(bookmark_id).force_encoding("utf-8")
     highlights  = @client.highlights(bookmark_id)
     {
       description:        bookmark['description'],
@@ -58,22 +42,36 @@ class InstapaperClient
       progress:           bookmark['progress'],
       starred:            bookmark['starred'],
       type:               bookmark['type'],
-      text:               build_highlighted_text(sanitized, highlights)
+      text:               build_highlighted_text(text, highlights)
     }
   end
 
   def build_highlighted_text(text, highlights)
-    # open_tag  = ''# '<span class="highlighted">'
-    # close_tag = ''# '</span>'
-    # highlights.each do |h|
-    #   highlighted_str = "#{open_tag}#{h[:text]}#{close_tag}"
-    #   text = text.gsub(h[:text], highlighted_str)
-    # end
-    # # fix_span_issue(text)
+    open_tag  = '<span class="highlighted">'
+    close_tag = '</span>'
+    highlights.each do |h|
+      highlighted_str = "#{open_tag}#{h[:text]}#{close_tag}"
+      text.gsub!(h[:text], highlighted_str)
+    end
     text
   end
 
-  def fix_span_issue(text)
-    text.gsub('<span>', '<span class="span">')
+  def sanitize(text)
+    html = text.force_encoding("utf-8")
+    doc  = Nokogiri::HTML(html)
+    doc.search('figure').remove
+
+    sanitized = Sanitize.fragment(
+      doc.to_html,
+      elements:   %w(h1 h2 h3 h4 h5 h6 strong i p b a span ul ol li),
+      attributes: {
+        'a'    => %w(href),
+        'span' => %w(style)
+      },
+      protocols:  {
+        'a'   => {'href' => %w(ftp http https mailto)}
+      }
+    )
+    sanitized
   end
 end

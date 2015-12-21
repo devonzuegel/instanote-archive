@@ -2,18 +2,31 @@ module EvernoteParsable
   extend ActiveSupport::Concern
 
   module ClassMethods
-    EDAM_NOTE_CONTENT_LEN_MAX = 5_242_880  # dev.evernote.com/doc/reference/Limits.html#Const_EDAM_NOTE_CONTENT_LEN_MAX
   end
 
   module InstanceMethods
+    private
+    # More info at: dev.evernote.com/doc/reference/Limits.html#Const_EDAM_NOTE_CONTENT_LEN_MAX
+    EDAM_NOTE_CONTENT_LEN_MAX = 5_242_880
+    BLACKLISTED_TAGS = %w(figure)
 
-    def wrap_highlights(text, highlights)
-      # open_tag  = '<span style="-evernote-highlighted:true; background-color:#f6ee96">'
-      # close_tag = '<\span>'
-      raise Exception
+    def html_to_enml(text)
+      doc  = Nokogiri::HTML( text.force_encoding("utf-8") )
+      BLACKLISTED_TAGS.each { |t| doc.search(t).remove }
+      sanitized = Sanitize.fragment(
+        doc.to_html,
+        elements:   %w(h1 h2 h3 h4 h5 h6 strong i p b a span ul ol li),
+        attributes: { 'a' => %w(href), 'span' => %w(style) },
+        protocols:  { 'a' => { 'href' => %w(ftp http https mailto) } }
+      )
+      highlight_style_spans(sanitized)
     end
 
-    private
+    def highlight_style_spans(html)
+      old_fragment = '<span>'
+      new_fragment = '<span style="-evernote-highlighted:true; background-color:#FFFFb0">'
+      html.gsub!(old_fragment, new_fragment)
+    end
 
     def format_note(note)
       {
