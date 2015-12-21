@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_one :evernote_account, dependent: :destroy
   has_one :instapaper_account, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
 
   scope :fully_connected, -> () {
     all.select { |u| u.evernote_connected? && u.instapaper_connected? }

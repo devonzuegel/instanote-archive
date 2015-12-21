@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151220031251) do
+ActiveRecord::Schema.define(version: 20151221174843) do
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.text     "description"
+    t.integer  "bookmark_id"
+    t.string   "title"
+    t.string   "url"
+    t.boolean  "starred"
+    t.string   "type"
+    t.text     "body"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
 
   create_table "evernote_accounts", force: :cascade do |t|
     t.string   "auth_token"
