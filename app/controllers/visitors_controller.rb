@@ -20,8 +20,9 @@ class VisitorsController < ApplicationController
   private
 
   def authenticate_instapaper!
-    authenticate_user!
-    if !current_user.instapaper_connected?
+    if !user_signed_in?
+      redirect_to root_url, alert: 'Please sign in or sign up.'
+    elsif !current_user.instapaper_connected?
       redirect_to root_url, notice: 'Please connect your Instapaper account.'
     end
   end

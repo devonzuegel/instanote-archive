@@ -13,7 +13,7 @@ class InstapaperClient
   end
 
   def bookmarks
-    archived #(archived + starred).uniq
+    archived  # (archived + starred).uniq
   end
 
   def archived
