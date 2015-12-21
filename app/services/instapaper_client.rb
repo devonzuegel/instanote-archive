@@ -50,8 +50,8 @@ class InstapaperClient
     open_tag  = '<span class="highlighted">'
     close_tag = '</span>'
     highlights.each do |h|
-      highlighted_str = "#{open_tag}#{h[:body]}#{close_tag}"
-      text.gsub!(h[:body], highlighted_str)
+      highlighted_str = "#{open_tag}#{h[:text]}#{close_tag}"
+      text.gsub!(h[:text], highlighted_str)
     end
     text
   end
