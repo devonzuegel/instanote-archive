@@ -393,7 +393,7 @@ DEPENDENCIES
   rb-inotify
   redcarpet
   rspec-rails
-  sanitize
+  sanitize (= 4.0.1)
   sass-rails (~> 5.0)
   selenium-webdriver
   simple_form (= 3.2.0)

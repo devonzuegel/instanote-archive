@@ -2,6 +2,16 @@ class User < ActiveRecord::Base
   has_one :evernote_account, dependent: :destroy
   has_one :instapaper_account, dependent: :destroy
 
+  scope :fully_connected, -> () {
+    all.select { |u| u.evernote_connected? && u.instapaper_connected? }
+  }
+
+  def self.sync_bookmarks
+    fully_connected.each do |user|
+      ap user
+    end
+  end
+
   def self.create_with_omniauth(auth)
     create! do |user|
       user.provider = auth['provider']

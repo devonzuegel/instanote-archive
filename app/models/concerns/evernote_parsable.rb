@@ -6,8 +6,6 @@ module EvernoteParsable
 
   module InstanceMethods
     private
-    # More info at: dev.evernote.com/doc/reference/Limits.html#Const_EDAM_NOTE_CONTENT_LEN_MAX
-    EDAM_NOTE_CONTENT_LEN_MAX = 5_242_880
     BLACKLISTED_TAGS = %w(figure)
 
     def html_to_enml(text)
