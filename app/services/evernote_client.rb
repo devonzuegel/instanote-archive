@@ -16,11 +16,8 @@ class EvernoteClient
   def note_from_bookmark(bookmark)
     parent_notebook = nil
     note_title = bookmark[:title]
-    note_body  = html_to_enml(bookmark[:text])#.slice(bookmark[:text].index('<html>')..-1)
+    note_body  = html_to_enml(bookmark[:body])
     # # CGI.unescapeHTML()
-    # puts 'NOTE BODY: --------------------------------------------------'
-    # puts note_body
-    # puts '-------------------------------------------------------------'
 
     n_body  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
     n_body += "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">"

@@ -13,7 +13,6 @@ class VisitorsController < ApplicationController
     # @notebooks = en_client.notebooks
     # @notes     = en_client.notes
 
-    # puts "@bookmarks.second[:text].length = #{@bookmarks.second[:text].length}".red
     en_client.note_from_bookmark(@bookmarks.second)
     # @bookmarks.each { |b| en_client.note_from_bookmark(b) }
   end
