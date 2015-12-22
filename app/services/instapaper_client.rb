@@ -1,5 +1,5 @@
 class InstapaperClient
-  LIMIT = 2  # Max allowed is 500
+  LIMIT = 2  # Possible range is [0..500]
 
   def initialize(instapaper_account)
     @credentials = {
@@ -13,22 +13,19 @@ class InstapaperClient
   end
 
   def bookmarks
-    archived  # (archived + starred).uniq
+    get_bookmarks('archive')  # (get_bookmarks('archive') + get_bookmarks('starred')).uniq
   end
 
-  def archived
-    archived = []
-    @client.bookmarks(limit: LIMIT, folder_id: 'archive').each { |b| archived << build_bookmark(b) }
-    archived
-  end
-
-  def starred
-    starred = []
-    @client.bookmarks(limit: LIMIT, folder_id: 'starred').each { |b|  starred << build_bookmark(b) }
-    starred
+  def get_bookmarks(folder_id = 'unread')
+    bookmarks = []
+    @client.bookmarks(limit: LIMIT, folder_id: folder_id).each do |b|
+     bookmarks << build_bookmark(b)
+   end
+    bookmarks
   end
 
   def build_bookmark(bookmark)
+    bookmark.deep_stringify_keys! if bookmark.class == Hash
     bookmark_id = bookmark['bookmark_id']
     text        = @client.get_text(bookmark_id).force_encoding("utf-8")
     highlights  = @client.highlights(bookmark_id)
@@ -39,9 +36,8 @@ class InstapaperClient
       url:                bookmark['url'],
       progress_timestamp: bookmark['progress_timestamp'],
       time:               bookmark['time'],
-      progress:           bookmark['progress'],
-      starred:            bookmark['starred'],
-      type:               bookmark['type'],
+      progress:           bookmark['progress'].to_f,
+      starred:            (bookmark['starred'] == '1') ? true : false,
       body:               build_highlighted_text(text, highlights)
     }
   end

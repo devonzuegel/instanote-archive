@@ -13,7 +13,8 @@ class VisitorsController < ApplicationController
     # @notebooks = en_client.notebooks
     # @notes     = en_client.notes
 
-    en_client.note_from_bookmark(@bookmarks.second)
+    # Bookmark.create_from_bookmark(@bookmarks.second, current_user)
+    # en_client.note_from_bookmark(@bookmarks.second)
     # @bookmarks.each { |b| en_client.note_from_bookmark(b) }
   end
 

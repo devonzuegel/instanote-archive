@@ -17,8 +17,8 @@ figure.tint: header.intro-header.short style="background-image: url('assets/book
 
     h1 Bookmarks (#{@bookmarks.count})
     - @bookmarks.each_with_index do |a, i|
-      / pre= JSON.pretty_generate(a.as_json)
       - if i > 0
         hr
-      h1= a[:title]
-      == a[:text]
+      pre= JSON.pretty_generate(a.as_json)
+      / h1= a[:title]
+      / == a[:text]

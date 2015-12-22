@@ -19,11 +19,15 @@ ActiveRecord::Schema.define(version: 20151221174843) do
     t.string   "title"
     t.string   "url"
     t.boolean  "starred"
-    t.string   "type"
     t.text     "body"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "progress_timestamp"
+    t.datetime "time"
+    t.float    "progress"
+    t.datetime "retrieved"
+    t.datetime "stored"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
