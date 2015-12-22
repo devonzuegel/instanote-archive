@@ -9,23 +9,26 @@ class User < ActiveRecord::Base
 
   def self.sync_bookmarks
     fully_connected.each do |user|
-      user.retrieve_bookmarks
-      n_bookmarks = user.save_bookmarks
-      logger.info "> #{n_bookmarks} bookmark(s) retrieved from Instapaper and stored to Evernote!"
+      n_retrieved = user.retrieve_bookmarks.length
+      n_stored    = user.save_bookmarks
+      logger.info "> #{Time.now.to_s}: #{n_retrieved} bookmark(s) retrieved from Instapaper (user ##{user.id})"
+      logger.info "> #{Time.now.to_s}: #{n_stored} bookmark(s) stored to Evernote (user ##{user.id})"
     end
   end
 
   def retrieve_bookmarks
     @in_client = InstapaperClient.new(instapaper_account)
-    @in_client.raw_bookmarks.each do |b|
-      ap b
+    new_raw_bookmarks = @in_client.raw_bookmarks.select { |b| !Bookmark.already_saved?(b, self) }
+    newly_saved = []
+    new_raw_bookmarks.each do |raw_bkmk|
+      newly_saved << Bookmark.create_from_bookmark(raw_bkmk, self)
     end
-    # ap bookmarks
+    newly_saved
   end
 
   def save_bookmarks
-    ## TODO
-    bookmarks.count
+    ## TODO actually store it to Evernote now!
+    bookmarks.select { |b| !b.stored }.count
   end
 
   def self.create_with_omniauth(auth)

@@ -12,6 +12,11 @@ class Bookmark < ActiveRecord::Base
     create(attrs.merge(user: user))
   end
 
+  def self.already_saved?(raw_bookmark, user)
+    duplicates = where(bookmark_id: raw_bookmark[:bookmark_id], user_id: user.id)
+    duplicates.length > 0
+  end
+
   def stored_to_evernote?
     !stored.nil?
   end
