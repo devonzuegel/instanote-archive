@@ -9,8 +9,17 @@ class User < ActiveRecord::Base
 
   def self.sync_bookmarks
     fully_connected.each do |user|
-      ap user
+      user.retrieve_bookmarks
+      user.save_bookmarks
     end
+  end
+
+  def retrieve_bookmarks
+    #
+  end
+
+  def save_bookmarks
+    #
   end
 
   def self.create_with_omniauth(auth)

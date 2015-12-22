@@ -1,13 +1,14 @@
 class Bookmark < ActiveRecord::Base
   belongs_to :user
   validates :user, presence: true
+  validates_uniqueness_of :bookmark_id, scope: :user_id
 
   def self.create_from_bookmark(bmk_obj, user)
+    duplicates = where(bookmark_id: bmk_obj[:bookmark_id], user_id: user.id)
+    return unless duplicates.empty?
+
     in_client = InstapaperClient.new(user.instapaper_account)
     attrs     = in_client.build_bookmark(bmk_obj)
-    puts '=== attrs: =============================================================='.black
-    ap attrs
-    puts '========================================================================='.black
     create(attrs.merge(user: user))
   end
 

@@ -24,21 +24,27 @@ class InstapaperClient
     bookmarks
   end
 
+  def get_text(bookmark)
+    is_pdf = bookmark['url'].end_with?('.pdf')
+    text   = is_pdf ? bookmark['url'] : @client.get_text(bookmark['bookmark_id'])
+    text.force_encoding("utf-8")
+  end
+
   def build_bookmark(bookmark)
     bookmark.deep_stringify_keys! if bookmark.class == Hash
-    bookmark_id = bookmark['bookmark_id']
-    text        = @client.get_text(bookmark_id).force_encoding("utf-8")
-    highlights  = @client.highlights(bookmark_id)
+    text        = get_text(bookmark)
+    highlights  = @client.highlights(bookmark['bookmark_id'])
     {
       description:        bookmark['description'],
-      bookmark_id:        bookmark_id,
+      bookmark_id:        bookmark['bookmark_id'],
       title:              bookmark['title'],
       url:                bookmark['url'],
       progress_timestamp: bookmark['progress_timestamp'],
       time:               bookmark['time'],
       progress:           bookmark['progress'].to_f,
       starred:            (bookmark['starred'] == '1') ? true : false,
-      body:               build_highlighted_text(text, highlights)
+      body:               build_highlighted_text(text, highlights),
+      retrieved:          Time.now
     }
   end
 

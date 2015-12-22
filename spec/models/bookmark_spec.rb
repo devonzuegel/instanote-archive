@@ -51,6 +51,21 @@ RSpec.describe Bookmark, type: :model do
     expect(bookmark.stored_to_evernote?).to be false
   end
 
+  it 'should only allow us to have one bookmark with a given id for a particular user' do
+    bid = 1234
+    Bookmark.create(bookmark_id: bid, user: @user)
+    expect(Bookmark.count).to eq 1
+    expect { Bookmark.create(bookmark_id: bid, user: @user) }.to change { Bookmark.count }.by 0
+  end
+
+  it 'should allow us to create multiple bookmarks with the same id for different users' do
+    bid = 1234
+    user2 = FactoryGirl.create(:user)
+    Bookmark.create(bookmark_id: bid, user: @user)
+    expect(Bookmark.count).to eq 1
+    expect { Bookmark.create(bookmark_id: bid, user: user2) }.to change { Bookmark.count }.by 1
+  end
+
   it 'create basic bookmark from a bookmark object with highlights'
   it 'should store to Evernote and update status'
 end

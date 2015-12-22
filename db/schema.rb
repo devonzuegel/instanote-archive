@@ -24,10 +24,10 @@ ActiveRecord::Schema.define(version: 20151221174843) do
     t.datetime "progress_timestamp"
     t.datetime "time"
     t.float    "progress"
-    t.datetime "retrieved"
+    t.datetime "retrieved",          default: '2015-12-22 19:03:09', null: false
     t.datetime "stored"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
   end
 
   add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
