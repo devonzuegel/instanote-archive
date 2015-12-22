@@ -17,13 +17,9 @@ class Bookmark < ActiveRecord::Base
   end
 
   def store_to_evernote(safe: true)
-    return if safe && !store_to_evernote?  # Don't save copies to Evernote
+    return if safe && !stored_to_evernote?  # Don't save copies to Evernote
     throw Exception  ## TODO store bookmark to Evernote
   end
 
   private
-
-  def get_body()
-    InstapaperClient.new(user.instapaper_account)
-  end
 end

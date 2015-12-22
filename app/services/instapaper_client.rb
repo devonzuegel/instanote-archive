@@ -1,5 +1,5 @@
 class InstapaperClient
-  LIMIT = 2  # Possible range is [0..500]
+  LIMIT = 1  # Possible range is [0..500]
 
   def initialize(instapaper_account)
     @credentials = {
@@ -12,15 +12,22 @@ class InstapaperClient
     @client.verify_credentials
   end
 
+  def raw_bookmarks
+    get_raw_bookmarks('archive')  # (get_bookmarks('archive') + get_bookmarks('starred')).uniq
+  end
+
   def bookmarks
     get_bookmarks('archive')  # (get_bookmarks('archive') + get_bookmarks('starred')).uniq
   end
 
   def get_bookmarks(folder_id = 'unread')
+    get_raw_bookmarks(folder_id).map { |b| build_bookmark(b) }
+  end
+
+  def get_raw_bookmarks(folder_id = 'unread')
     bookmarks = []
-    @client.bookmarks(limit: LIMIT, folder_id: folder_id).each do |b|
-     bookmarks << build_bookmark(b)
-   end
+    results = @client.bookmarks(limit: LIMIT, folder_id: folder_id)[:bookmarks]
+    results.each { |b| bookmarks << b }
     bookmarks
   end
 

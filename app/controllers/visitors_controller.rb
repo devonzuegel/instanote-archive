@@ -9,7 +9,7 @@ class VisitorsController < ApplicationController
     @bookmarks = []
     in_client.bookmarks.each { |b| @bookmarks << b }  # Can't .map the bookmark list >:|
 
-    en_client  = EvernoteClient.new(auth_token: current_user.evernote_account.auth_token)
+    # en_client  = EvernoteClient.new(auth_token: current_user.evernote_account.auth_token)
     # @notebooks = en_client.notebooks
     # @notes     = en_client.notes
 
