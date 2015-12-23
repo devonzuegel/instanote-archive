@@ -16,7 +16,7 @@ figure.tint: header.intro-header.short style="background-image: url('assets/book
     /   pre= JSON.pretty_generate(note.as_json)
 
     h1 Bookmarks
-    - Bookmark.all.each_with_index do |a, i|
+    - Bookmark.limit(5).each_with_index do |a, i|
       - if i > 0
         hr
       pre= JSON.pretty_generate(a.as_json.except('body'))
