@@ -1,5 +1,5 @@
 class InstapaperClient
-  LIMIT = 1  # Possible range is [0..500]
+  LIMIT = 500  # Possible range is [0..500]
 
   def initialize(instapaper_account)
     @credentials = {
