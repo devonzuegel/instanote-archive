@@ -10,9 +10,9 @@ class User < ActiveRecord::Base
   def self.sync_bookmarks
     fully_connected.each do |user|
       n_retrieved = user.retrieve_bookmarks.length
-      n_stored    = user.save_bookmarks
-      logger.info "> #{Time.now.to_s}: #{n_retrieved} bookmark(s) retrieved from Instapaper (user ##{user.id})"
-      logger.info "> #{Time.now.to_s}: #{n_stored} bookmark(s) stored to Evernote (user ##{user.id})"
+      puts "> #{Time.now.to_s}: #{n_retrieved} bookmark(s) retrieved from Instapaper (user ##{user.id})"
+      # n_stored    = user.save_bookmarks
+      # puts "> #{Time.now.to_s}: #{n_stored} bookmark(s) stored to Evernote (user ##{user.id})"
     end
   end
 

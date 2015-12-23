@@ -5,15 +5,13 @@ class VisitorsController < ApplicationController
   end
 
   def bookmarks
-    in_client  = InstapaperClient.new(current_user.instapaper_account)
-    @bookmarks = []
-    in_client.bookmarks.each { |b| @bookmarks << b }  # Can't .map the bookmark list >:|
+    current_user.bookmarks
 
     # en_client  = EvernoteClient.new(auth_token: current_user.evernote_account.auth_token)
     # @notebooks = en_client.notebooks
     # @notes     = en_client.notes
 
-    Bookmark.create_from_bookmark(@bookmarks.second, current_user)
+    # Bookmark.create_from_bookmark(@bookmarks.second, current_user)
     # en_client.note_from_bookmark(@bookmarks.second)
     # @bookmarks.each { |b| en_client.note_from_bookmark(b) }
   end
