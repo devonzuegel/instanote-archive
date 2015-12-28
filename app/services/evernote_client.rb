@@ -26,31 +26,36 @@ class EvernoteClient
       puts " EDAMUserException:                 \n" +
            " > errorCode: #{edue.errorCode}     \n" +
            " > parameter: #{edue.parameter}       "
+      return nil
     rescue Evernote::EDAM::Error::EDAMNotFoundException => ednfe
       puts "EDAMNotFoundException: Invalid parent notebook GUID"
+      return nil
     end
 
     note
   end
 
   def note_from_bookmark(bookmark)
-    parent_notebook = nil
-    note_title = bookmark[:title]
-    note_body  = html_to_enml(bookmark[:body])
-    # CGI.unescapeHTML()
+    notebook  = nil  # PLACEHOLDER
+    attrs     = Evernote::EDAM::Type::NoteAttributes.new(
+      sourceURL:         bookmark.url,
+      sourceApplication: 'Instapaper',
+      author:   bookmark.user.name,
+    )
+    note_body = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"                          +
+                "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">" +
+                "<en-note>#{html_to_enml(bookmark[:body])}#{ORIGIN_STAMP}</en-note>"
 
-    n_body = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"                          +
-             "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">" +
-             "<en-note>#{note_body}#{ORIGIN_STAMP}</en-note>"
+    # Create note object. `notebook` is optional; if omitted, default notebook is used.
+    note = Evernote::EDAM::Type::Note.new(
+      title:      bookmark[:title],
+      content:    note_body,
+      tagNames:   [],
+      attributes: attrs
+    )
+    note.notebookGuid = notebook.guid if notebook && notebook.guid
 
-    # Create note object. `parent_notebook` is optional; if omitted, default notebook is used.
-    our_note         = Evernote::EDAM::Type::Note.new
-    our_note.title   = note_title
-    our_note.content = n_body
-    if parent_notebook && parent_notebook.guid
-      our_note.notebookGuid = parent_notebook.guid
-    end
-    our_note
+    note
   end
 
   def notebooks

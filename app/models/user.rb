@@ -10,15 +10,16 @@ class User < ActiveRecord::Base
   def self.sync_bookmarks
     fully_connected.each do |user|
       n_retrieved = user.retrieve_bookmarks.length
-      puts "> #{Time.now.to_s}: #{n_retrieved} bookmark(s) retrieved from Instapaper (user ##{user.id})"
-      # n_stored    = user.save_bookmarks
-      # puts "> #{Time.now.to_s}: #{n_stored} bookmark(s) stored to Evernote (user ##{user.id})"
+      puts "#{Time.now.to_s}: #{n_retrieved} bookmark(s) retrieved from Instapaper (user ##{user.id})"
+      n_stored    = user.save_bookmarks
+      puts "#{Time.now.to_s}: #{n_stored} bookmark(s) stored to Evernote (user ##{user.id})"
     end
   end
 
   def retrieve_bookmarks
-    @in_client = InstapaperClient.new(instapaper_account)
-    new_raw_bookmarks = @in_client.raw_bookmarks.select { |b| !Bookmark.already_saved?(b, self) }
+    in_client         = InstapaperClient.new(instapaper_account)
+    new_raw_bookmarks = in_client.raw_bookmarks.select { |b| !Bookmark.already_saved?(b, self) }
+
     newly_saved = []
     new_raw_bookmarks.each do |raw_bkmk|
       newly_saved << Bookmark.create_from_bookmark(raw_bkmk, self)
@@ -26,9 +27,13 @@ class User < ActiveRecord::Base
     newly_saved
   end
 
-  def save_bookmarks
-    ## TODO actually store it to Evernote now!
-    bookmarks.select { |b| !b.stored }.count
+  def save_bookmarks(ignore_duplicates: true)
+    bkmks_to_save_to_evernote = ignore_duplicates ? bookmarks.newly_synced : bookmarks
+    en_client = EvernoteClient.new(auth_token: evernote_account.auth_token)
+
+    bkmks_to_save_to_evernote.each do |b|
+      b.store_to_evernote!(en_client: en_client)
+    end
   end
 
   def self.create_with_omniauth(auth)
