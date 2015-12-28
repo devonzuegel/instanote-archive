@@ -6,7 +6,7 @@ class EvernoteClient
 
   OFFSET    = 0
   N_RESULTS = 100
-  ORIGIN_STAMP = "\n\n\n" + "via <a href='https://instanote-archive.herokuapp.com/'><i>Instanote</i></a>"
+  ORIGIN_STAMP = "\n\n\n" + "<i>via <a href='https://instanote-archive.herokuapp.com/'>Instanote</a></i>"
 
   def initialize(attributes = {})
     @auth_token = attributes.fetch(:auth_token)
