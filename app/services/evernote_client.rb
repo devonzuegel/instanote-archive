@@ -6,6 +6,7 @@ class EvernoteClient
 
   OFFSET    = 0
   N_RESULTS = 100
+  ORIGIN_STAMP = "\n\n\n" + "via <a href='https://instanote-archive.herokuapp.com/'><i>Instanote</i></a>"
 
   def initialize(attributes = {})
     @auth_token = attributes.fetch(:auth_token)
@@ -13,39 +14,43 @@ class EvernoteClient
     ping_evernote
   end
 
+  def store_note_from_bookmark!(bookmark)
+    note = note_from_bookmark(bookmark)
+    store_note!(note)
+  end
+
+  def store_note!(our_note)
+    begin  # Attempt to create note in Evernote account
+      note = note_store.createNote(our_note)
+    rescue Evernote::EDAM::Error::EDAMUserException => edue
+      puts " EDAMUserException:                 \n" +
+           " > errorCode: #{edue.errorCode}     \n" +
+           " > parameter: #{edue.parameter}       "
+    rescue Evernote::EDAM::Error::EDAMNotFoundException => ednfe
+      puts "EDAMNotFoundException: Invalid parent notebook GUID"
+    end
+
+    note
+  end
+
   def note_from_bookmark(bookmark)
     parent_notebook = nil
     note_title = bookmark[:title]
     note_body  = html_to_enml(bookmark[:body])
-    # # CGI.unescapeHTML()
+    # CGI.unescapeHTML()
 
-    n_body  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-    n_body += "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">"
-    n_body += "<en-note>#{note_body}</en-note>"
+    n_body = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"                          +
+             "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">" +
+             "<en-note>#{note_body}#{ORIGIN_STAMP}</en-note>"
 
-    # Create note object
-    # parent_notebook is optional; if omitted, default notebook is used
+    # Create note object. `parent_notebook` is optional; if omitted, default notebook is used.
     our_note         = Evernote::EDAM::Type::Note.new
     our_note.title   = note_title
     our_note.content = n_body
     if parent_notebook && parent_notebook.guid
       our_note.notebookGuid = parent_notebook.guid
     end
-
-    begin  # Attempt to create note in Evernote account
-      note = note_store.createNote(our_note)
-    rescue Evernote::EDAM::Error::EDAMUserException => edue  ## Something was wrong with the note data
-      # See EDAMErrorCode enumeration for error code explanation
-      # http://dev.evernote.com/documentation/reference/Errors.html#Enum_EDAMErrorCode
-      puts " EDAMUserException:                 \n" +
-           " > errorCode: #{edue.errorCode}     \n" +
-           " > parameter: #{edue.parameter}       "
-    rescue Evernote::EDAM::Error::EDAMNotFoundException => ednfe
-      # Parent Notebook GUID doesn't correspond to an actual notebook
-      puts "EDAMNotFoundException: Invalid parent notebook GUID"
-    end
-
-    note
+    our_note
   end
 
   def notebooks
