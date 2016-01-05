@@ -36,6 +36,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def save_test_bookmark!
+    en_client = EvernoteClient.new(auth_token: evernote_account.auth_token)
+    time      = Time.now.strftime "%H:%M:%S %d %b %Y"
+    test_str  = "#{time}: THIS IS A TEST"
+    bookmark  = Bookmark.create(user: self, title: test_str, body: test_str)
+    bookmark.store_to_evernote!(en_client: en_client)
+  end
+
   def self.create_with_omniauth(auth)
     create! do |user|
       user.provider = auth['provider']

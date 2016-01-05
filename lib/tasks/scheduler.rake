@@ -4,3 +4,10 @@ task :sync_bookmarks => :environment do
   User.sync_bookmarks
   puts 'Done!'
 end
+
+task :test_note => :environment do
+  puts 'Syncing a single test bookmark.'
+  user = User.where(name: 'Devon Marisa Zuegel')
+  user.save_test_bookmark!
+  puts 'Saved a test bookmark to Devon\'s Evernote account.'
+end
