@@ -33,7 +33,13 @@ class InstapaperClient
 
   def get_text(bookmark)
     is_pdf = bookmark['url'].end_with?('.pdf')
-    text   = is_pdf ? bookmark['url'] : @client.get_text(bookmark['bookmark_id'])
+    return bookmark['url'] if is_pdf
+    begin
+      text = @client.get_text(bookmark['bookmark_id'])
+    rescue Instapaper::Error => e
+      puts "Failed to generate text version of this URL: #{bookmark['url']}"
+      raise Instapaper::Error
+    end
     text.force_encoding("utf-8")
   end
 
