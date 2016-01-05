@@ -19,4 +19,4 @@ production:
   omniauth_provider_key:     8NL0YeSYTJdjMt3frVJl77xQt
   omniauth_provider_secret:  8hVGjADkiRJdtvNgcWVSMZUi0Mx6h3oLxjA5B4BBtlyoP7lSNo
   # Evernote Oauth
-  en_oauth_site:             https://www.evernote.com
+  en_oauth_site:             https://www.evernote.com/
