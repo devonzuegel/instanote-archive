@@ -31,7 +31,7 @@ class Bookmark < ActiveRecord::Base
     puts " > Url:   #{url}"
     stored_note = en_client.store_note_from_bookmark!(self)
     if stored_note.nil?
-      puts " >> Note was not stored successfully. Cancelling..."
+      puts " >> Note was not stored successfully. Skipping..."
     else
       puts " >> Note stored successfully!"
       self.stored = Time.now

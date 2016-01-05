@@ -22,7 +22,12 @@ class User < ActiveRecord::Base
 
     newly_saved = []
     new_raw_bookmarks.each do |raw_bkmk|
-      newly_saved << Bookmark.create_from_bookmark(raw_bkmk, self)
+      begin
+        bkmk = Bookmark.create_from_bookmark(raw_bkmk, self)
+        newly_saved << bmk_obj
+      rescue Instapaper::Error => e
+        puts ">> Unable to retrieve the following url: '#{raw_bkmk['url']}'. Skipping..."
+      end
     end
     newly_saved
   end

@@ -37,8 +37,7 @@ class InstapaperClient
     begin
       text = @client.get_text(bookmark['bookmark_id'])
     rescue Instapaper::Error => e
-      puts "Failed to generate text version of this URL: #{bookmark['url']}"
-      raise Instapaper::Error
+      raise Instapaper::Error, "Failed to generate text version of this URL: #{bookmark['url']}"
     end
     text.force_encoding("utf-8")
   end
