@@ -60,7 +60,7 @@ li a {
   }
 
   a {
-    color: #ddd !important;
+    color: #f1f1f1 !important;
     &:hover {
       color: white !important;
     }
@@ -106,7 +106,7 @@ p, li {
 .intro-header .site-heading h1 {
   @extend .text-pic-shadow;
 }
-nav li a {
+nav li a, .navbar-header {
   @extend .text-pic-shadow-small;
 }
 .tint {
