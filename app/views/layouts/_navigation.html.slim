@@ -12,8 +12,8 @@ nav.navbar.navbar-default.navbar-custom.navbar-fixed-top.navbar-inverse
     /   /! Collect the nav links, forms, and other content for toggling
       / #bs-example-navbar-collapse-1.collapse.navbar-collapse
     ul.nav.navbar-nav.navbar-right
-      - if user_signed_in?
-        li= link_to 'Bookmarks', bookmarks_path
+      / - if user_signed_in?
+      /   li= link_to 'Bookmarks', bookmarks_path
       li= link_to 'About', about_path
       - if user_signed_in?
         li= link_to 'Sign out', signout_path
